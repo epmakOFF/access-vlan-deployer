@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deploy VLAN | {{ switch }}</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f1f5f9;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-family: inherit;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.25);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(67, 97, 238, 0.25);
+        }
+
+        .vlan-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background-color: #e9ecef;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h3>Настройка VLAN на {{ switch }}</h3>
+        </div>
+        
+        <div class="content">
+            <form action="/deploy-vlan" method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Порт</th>
+                            <th>Описание</th>
+                            <th>Текущий VLAN</th>
+                            <th>Новый VLAN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for iface, iface_data in interfaces.items() %}
+                        <tr>
+                            <td>{{ iface }}</td>
+                            <td>{{ iface_data.description }}</td>
+                            <td><span class="vlan-badge">{{ iface_data.current_vlan }}</span></td>
+                            <td>
+                                <select name="{{ iface }}">
+                                    {% for vlan_id, vlan_name, _ in vlans %}
+                                    <option value="{{ vlan_id }}" {% if vlan_id == iface_data.current_vlan %}selected{% endif %}>
+                                        {{ vlan_id }} ({{ vlan_name }})
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <input type="hidden" name="switch" value="{{ switch }}">
+                <textarea name="interfaces" style="display: none;">{{ interfaces | tojson | safe }}</textarea>
+                
+                <button type="submit" class="btn">Применить изменения</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>Access VLAN Deployment</title>
+   </head>
+   <body>
+      <form action="/deploy-vlan" method="post">
+         <h3>Access VLAN Deployment for {{ switch }}</h3>
+         <table border="1" align="left" cellpadding="2" cellspacing="2" width="30%">
+            <tr><th> Port </th><th> Description </th><th> Current VLAN </th><th> New VLAN </th></tr>
+            {% for iface, iface_data in interfaces.items() %}
+            <tr>
+               <td> {{ iface }} </td>
+               <td> {{ iface_data.description }} </td>
+               <td> {{ iface_data.current_vlan }} </td>
+               <td>
+                  <select name="{{ iface }}" style="margin-right: 5px;">
+                     {% for vlan_id, vlan_name, _ in vlans %}
+                     <option value="{{ vlan_id }}" {% if vlan_id == iface_data.current_vlan %}selected{% endif %}>
+                        {{ vlan_id }} ({{ vlan_name }})
+                     </option>
+                     {% endfor %}
+                  </select>
+               </td>
+            </tr>
+            {% endfor %}
+         </table>
+         <div style="clear: both;"></div>
+         <br>
+         <input type="hidden" name="switch" value="{{ switch }}">
+         <textarea name="interfaces" style="display: none;">{{ interfaces | tojson | safe }}</textarea>
+         <input type="submit" value="Катим" />
+      </form>
+   </body>
+</html>
