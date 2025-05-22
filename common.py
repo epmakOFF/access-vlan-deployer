@@ -1,7 +1,8 @@
 import re
-from dotenv import load_dotenv
 from os import getenv
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 
 def get_auth(value):
@@ -31,7 +32,9 @@ def parse_vlan_brief(vlans):
     Парсит VLANs и возвращает список кортежей с информацией о них в виде
     [('1', 'default', 'Gi0/2')]
     """
-    regex = re.compile(r"(\d+)\s+(\S+)\s+\S+\s+((?:Gi[0-9]/[0-9](?:, )?)+)?", re.MULTILINE)
+    regex = re.compile(
+        r"(\d+)\s+(\S+)\s+\S+\s+((?:Gi[0-9]/[0-9](?:, )?)+)?", re.MULTILINE
+    )
     vlans = regex.findall(vlans)
     return vlans
 
@@ -40,7 +43,6 @@ def prepare_data(data):
     """
     Подготавливает данные для вывода на страницу
     """
-    # data["switch"], data["interfaces"], data["vlans"]
     for iface, description in data["interfaces"].items():
         for vlan in data["vlans"]:
             if iface in vlan[2]:
