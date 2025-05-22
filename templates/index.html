@@ -29,7 +29,7 @@
          <div style="clear: both;"></div>
          <br>
          <input type="hidden" name="switch" value="{{ switch }}">
-         <input type="hidden" name="interfaces" value="{{ interfaces }}">
+         <textarea name="interfaces" style="display: none;">{{ interfaces | tojson | safe }}</textarea>
          <input type="submit" value="Катим" />
       </form>
    </body>

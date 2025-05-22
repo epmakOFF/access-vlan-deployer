@@ -8,7 +8,7 @@ from common import (
 )
 
 
-def device_info(switch):
+def device_params(switch):
     """
     Возвращает информацию о устройстве
     """
@@ -27,7 +27,7 @@ def get_switch_info(switch):
     """
     try:
         # Подключаемся к устройству
-        with ConnectHandler(**device_info(switch)) as conn:
+        with ConnectHandler(**device_params(switch)) as conn:
             # Выполняем команды
             interfaces = conn.send_command("show interface description")
             vlans = conn.send_command("show vlan brief | exclude unsup")
@@ -41,18 +41,18 @@ def get_switch_info(switch):
         print(f"Ошибка подключения: {error}")
 
 
-def deploy_vlan(switch, interfaces, data):
+def deploy_vlan(switch, interfaces, vlans):
     """
     Деплоим VLANы на порты свича
     """
     cmd = []
     # Формируем команды
-    for iface, new_vlan in data.items():
+    for iface, new_vlan in vlans.items():
         if interfaces[iface]["current_vlan"] != new_vlan:
             cmd.append(f"interface {iface}")
             cmd.append(f"switchport access vlan {new_vlan}")
     print(cmd)
     # Выполняем команды
-    with ConnectHandler(**device_info(switch)) as conn:
+    with ConnectHandler(**device_params(switch)) as conn:
         conn.send_config_set(cmd)
 
