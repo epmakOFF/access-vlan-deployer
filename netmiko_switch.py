@@ -1,11 +1,7 @@
 from netmiko import ConnectHandler
 from netmiko.exceptions import NetmikoBaseException
-from common import (
-    get_auth,
-    parse_interface_description,
-    parse_vlan_brief,
-    prepare_data
-)
+
+from common import get_auth, parse_interface_description, parse_vlan_brief, prepare_data
 
 
 def device_params(switch):
@@ -34,7 +30,7 @@ def get_switch_info(switch):
             data = {
                 "switch": switch,
                 "interfaces": parse_interface_description(interfaces),
-                "vlans": parse_vlan_brief(vlans)
+                "vlans": parse_vlan_brief(vlans),
             }
             return prepare_data(data)
     except NetmikoBaseException as error:
@@ -48,6 +44,8 @@ def deploy_vlan(switch, interfaces, vlans):
     cmd = []
     # Формируем команды
     for iface, new_vlan in vlans.items():
+        # добавляем в список команд, если текущий VLAN не равен новому
+        # чтобы не применять уже примененную конфигурацию
         if interfaces[iface]["current_vlan"] != new_vlan:
             cmd.append(f"interface {iface}")
             cmd.append(f"switchport access vlan {new_vlan}")
@@ -55,4 +53,3 @@ def deploy_vlan(switch, interfaces, vlans):
     # Выполняем команды
     with ConnectHandler(**device_params(switch)) as conn:
         conn.send_config_set(cmd)
-

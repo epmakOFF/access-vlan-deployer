@@ -1,9 +1,13 @@
 import json
-from flask import request, Flask, render_template, redirect
-from netmiko_switch import get_switch_info, deploy_vlan
+
+from flask import Flask, redirect, render_template, request
+
+from netmiko_switch import deploy_vlan, get_switch_info
+
 # from scrapli_switch import get_switch_info, deploy_vlan
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def root():
@@ -13,6 +17,7 @@ def root():
     switch = request.args.get("switch")
     data = get_switch_info(switch)
     return render_template("pretty-index.html", **data)
+
 
 @app.route("/deploy-vlan", methods=["POST"])
 def deploy():
@@ -27,6 +32,7 @@ def deploy():
     vlans = form_data
     deploy_vlan(switch, interfaces, vlans)
     return redirect(f"/?switch={switch}")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
