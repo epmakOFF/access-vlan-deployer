@@ -20,7 +20,7 @@ def get_auth(value):
 def parse_interface_description(interfaces):
     """
     Парсит description интерфейсов и возвращает словарь с информацией о них
-    в виде {"Gi0/0": "Tatooine"...}
+    в виде {"Gi0/0": "Tatooine", "Gi0/1": "Coruscant"...}
     """
     regex = re.compile(r"(Gi[0-9]/[0-9])\s+\S+\s+\S+\s+(\S+)", re.MULTILINE)
     interfaces = regex.findall(interfaces)
@@ -30,7 +30,7 @@ def parse_interface_description(interfaces):
 def parse_vlan_brief(vlans):
     """
     Парсит VLANs и возвращает список кортежей с информацией о них в виде
-    [('1', 'default', 'Gi0/2')]
+    [("10", "management", "Gi1/3"), ("30", "luke_skywalker", "Gi0/1, Gi0/3")...]
     """
     regex = re.compile(
         r"(\d+)\s+(\S+)\s+\S+\s+((?:Gi[0-9]/[0-9](?:, )?)+)?", re.MULTILINE
