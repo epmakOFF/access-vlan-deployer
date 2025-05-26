@@ -9,12 +9,11 @@ from scrapli_switch import get_switch_info, deploy_vlan
 app = Flask(__name__)
 
 
-@app.route("/")
-def root():
+@app.route("/<switch>")
+def root(switch):
     """
     Обрабатываем запрос на http://localhost:5000/?switch=cisco-sw
     """
-    switch = request.args.get("switch")
     data = get_switch_info(switch)
     return render_template("pretty-index.html", **data)
 
@@ -32,8 +31,8 @@ def deploy():
     interfaces = json.loads(form_data.pop("interfaces"))
     vlans = form_data
     deploy_vlan(switch, interfaces, vlans)
-    return redirect(f"/?switch={switch}")
+    return redirect(f"/{switch}")
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host="0.0.0.0")
