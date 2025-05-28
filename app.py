@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route("/<switch>")
 def root(switch):
     """
-    Обрабатываем запрос на http://localhost:5000/?switch=cisco-sw
+    Обрабатываем запрос на http://localhost:5000/cisco-sw
     """
     data = get_switch_info(switch)
     return render_template("pretty-index.html", **data)

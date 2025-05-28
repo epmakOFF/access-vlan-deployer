@@ -103,7 +103,7 @@ access-vlan-deployer это имя образа которое мы собрал
 ## Как это работает
 
 1. Приложение запускается на `http://localhost:5000`
-2. В URL можно указать домен или IP коммутатора Cisco: `http://localhost:5000/?switch=<domain_name/ip>`
+2. В URL можно указать домен или IP коммутатора Cisco: `http://localhost:5000/<domain_name/ip>`
 3. Приложение подключается к коммутатору и получает информацию о:
    - Интерфейсах и их описаниях (`show interface description`)
    - Настроенных access VLAN'ах (`show vlan brief | exclude unsup`)
