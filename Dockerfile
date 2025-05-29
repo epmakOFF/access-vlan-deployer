@@ -6,6 +6,7 @@
 FROM python:3.11-slim
 
 # устанавливаем системные зависимости для SSH
+# и чистим кэш пакетов для оптимизации размера образа
 RUN apt-get update && apt-get install -y openssh-client && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p ~/.ssh
