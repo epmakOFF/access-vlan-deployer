@@ -14,7 +14,7 @@ def device_params(switch):
         "auth_username": get_auth("USERNAME"),
         "auth_password": get_auth("PASSWORD"),
         "auth_strict_key": False,
-        "transport": "paramiko",
+        "ssh_config_file": True,
     }
 
 

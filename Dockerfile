@@ -5,6 +5,20 @@
 # используем легковесный образ python 3.11
 FROM python:3.11-slim
 
+# устанавливаем системные зависимости для SSH
+RUN apt-get update && apt-get install -y openssh-client && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p ~/.ssh
+RUN cat <<EOF > ~/.ssh/config
+Host cisco-sw
+    HostName cisco-sw
+    User cisco
+    KexAlgorithms diffie-hellman-group-exchange-sha1
+    HostKeyAlgorithms ssh-rsa
+EOF
+
+RUN chmod 600 ~/.ssh/config
+
 # устанавливаем рабочую директорию в /app
 WORKDIR /app
 
@@ -18,4 +32,4 @@ RUN pip install -r requirements.txt
 EXPOSE 5000
 
 # запускаем приложение при старте контейнера
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000"]
+CMD ["gunicorn", "--log-level", "debug", "app:app", "--bind", "0.0.0.0:5000"]

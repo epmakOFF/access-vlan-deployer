@@ -14,13 +14,13 @@ interfaces = [
         "name": "FastEthernet1/1",
         "description": "Development",
         "ip_address": "192.168.1.1",
-        "subnet_mask": "255.255.255.0"
+        "subnet_mask": "255.255.255.0",
     },
     {
         "name": "FastEthernet1/2",
         "description": "Sales",
         "ip_address": "192.168.2.1",
-        "subnet_mask": "255.255.255.0"
+        "subnet_mask": "255.255.255.0",
     },
 ]
 

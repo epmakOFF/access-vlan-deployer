@@ -2,9 +2,10 @@ import json
 
 from flask import Flask, redirect, render_template, request
 
+from scrapli_switch import deploy_vlan, get_switch_info
+
 # from netmiko_switch import deploy_vlan, get_switch_info
 
-from scrapli_switch import get_switch_info, deploy_vlan
 
 app = Flask(__name__)
 
@@ -15,7 +16,10 @@ def root(switch):
     Обрабатываем запрос на http://localhost:5000/cisco-sw
     """
     data = get_switch_info(switch)
-    return render_template("pretty-index.html", **data)
+    if data:
+        return render_template("pretty-index.html", **data)
+    else:
+        return "Can't get data from switch", 404
 
 
 @app.route("/deploy-vlan", methods=["POST"])
