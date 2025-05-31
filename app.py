@@ -17,7 +17,7 @@ def root(switch):
     """
     data = get_switch_info(switch)
     if data:
-        return render_template("index.html", **data)
+        return render_template("pretty-index.html", **data)
     else:
         return "Can't get data from switch", 404
 
