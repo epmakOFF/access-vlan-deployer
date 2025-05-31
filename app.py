@@ -17,7 +17,7 @@ def root(switch):
     """
     data = get_switch_info(switch)
     if data:
-        return render_template("pretty-index.html", **data)
+        return render_template("index.html", **data)
     else:
         return "Can't get data from switch", 404
 
@@ -25,7 +25,8 @@ def root(switch):
 @app.route("/deploy-vlan", methods=["POST"])
 def deploy():
     """
-    Обрабатываем нажатие кнопки (POST запрос в http://localhost:5000/deploy-vlan)
+    Обрабатываем нажатие кнопки 
+    (POST запрос в http://localhost:5000/deploy-vlan)
     """
     form_data = request.form.copy()
     switch = form_data.pop("switch")
@@ -40,3 +41,4 @@ def deploy():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
+

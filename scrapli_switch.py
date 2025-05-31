@@ -6,7 +6,13 @@ from common import get_auth, parse_interface_description, parse_vlan_brief, prep
 
 def device_params(switch):
     """
-    Возвращает информацию об устройстве
+    Возвращает информацию о устройстве необходимую
+    для подключения к свичу через Scrapli c типом
+    cisco_iosxe и хостом из переменной switch
+    Так как у нас логин/пароль, отключаем
+    жестко заданную аутентификацию по ключу
+    И говорим что нужно читать ~/.ssh/config
+    перед подключением
     """
     return {
         "platform": "cisco_iosxe",

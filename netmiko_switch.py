@@ -6,7 +6,9 @@ from common import get_auth, parse_interface_description, parse_vlan_brief, prep
 
 def device_params(switch):
     """
-    Возвращает информацию о устройстве
+    Возвращает информацию о устройстве необходимую
+    для подключения к свичу через Netmiko c типом
+    cisco_ios и хостом из переменной switch
     """
     return {
         "device_type": "cisco_ios",
@@ -49,7 +51,6 @@ def deploy_vlan(switch, interfaces, vlans):
         if interfaces[iface]["current_vlan"] != new_vlan:
             cmd.append(f"interface {iface}")
             cmd.append(f"switchport access vlan {new_vlan}")
-    print(cmd)
     # Выполняем команды
     with ConnectHandler(**device_params(switch)) as conn:
         conn.send_config_set(cmd)

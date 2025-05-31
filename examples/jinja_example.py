@@ -25,4 +25,5 @@ interfaces = [
 ]
 
 j2 = Template(template)
-print(j2.render(interfaces=interfaces))
+result = j2.render(interfaces=interfaces)
+print(result)
