@@ -1,3 +1,9 @@
+Ссылка на выступление:
+- [GetNet](https://live.getnet.pro/archive/9) (начало в 6:40:30)
+- [YouTube](https://youtu.be/azvPDW5E7qE?si=CiwbSd1ZoYUt3FbA&t=24036)
+
+[Материалы](./vlan-service-new.pdf)
+
 # Access VLAN Deployer
 
 ## О проекте
